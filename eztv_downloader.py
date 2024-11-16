@@ -3,6 +3,9 @@ import requests
 import os
 from lxml import html
 from magnet2torrent import magnet2torrent
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def find_movie(imdb_id, api_key, enable_logs = False):
     code = "(async () => { let req = await fetch(\"https://en.eztv-official.com/ajax/search?query=" + imdb_id + "\"); let result = await req.json(); if(result.status ===\"ok\"){let url = result.data[0].url; req = await fetch(url); result = await req.text()} })()"
@@ -68,10 +71,9 @@ def find_movie(imdb_id, api_key, enable_logs = False):
 
 
 if __name__ == "__main__":
-    #zenrows api key
-    api_key = "..."
-    save_path = "./torrent_files/2020-2024/"
-    id_list_file = "id_list.txt"
+    api_key = os.getenv("ZENROWS_API_KEY")
+    save_path = os.getenv("EZTV_SAVE_PATH")
+    id_list_file = os.getenv("EZTV_ID_LIST")
     
     with open(id_list_file, "r") as f:
         id_list = f.read().splitlines() 
