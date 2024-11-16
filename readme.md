@@ -53,24 +53,24 @@ source ~/virtual_env/venv_30/bin/activate
 pip install libtorrent lxml
 ```
 
-### 5. Setup variables
+### 5. Setup variables in .env file
 
 Zenrows api key
 
-```python
-api_key = "..."
+```env
+ZENROWS_API_KEY = ...
 ```
 
 Save path for .torrent files
 
-```python
-save_path = "./torrent_files/2020-2024/"
+```env
+EZTV_SAVE_PATH = ./torrent_files/2020-2024/
 ```
 
 Path to file with imdb id list
 
-```python
-id_list_file = "id_list.txt"
+```env
+EZTV_ID_LIST = id_list.txt
 ```
 
 ### 6. Run script
