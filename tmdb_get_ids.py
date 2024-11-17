@@ -28,12 +28,11 @@ def get_imdb_ids(date_range):
         page += 1
         print(f"Date range {msg_range}. Page {str(page)}")
         params["page"] = page
-        res = tmdb.discover(params)
+        res = tmdb_api.discover(params,enable_log)
         if len(res["results"]) == 0:
-            print(res)
             break
         for movie in res["results"]:
-            res_id = tmdb.external_ids(movie["id"])
+            res_id = tmdb_api.external_ids(movie["id"], enable_log)
             if res_id["imdb_id"] is not None:
                 results.append(res_id["imdb_id"])
 
@@ -58,19 +57,18 @@ params = {
 }
 
 
-save_file = "id_list2.txt"
+yaars_settings = os.getenv("TMDB_YEARS")
+save_file = os.getenv("TMDB_SAVE_FILE")
+tmdb_access_token = os.getenv("TMDB_ACCESS_TOKEN")
+enable_log = os.getenv("TMDB_ENABLE_LOGS") == "true"
+MAX_THREADS = int(os.getenv("TMDB_MAX_THREADS")) 
 
-#Setup years range. In this case it will be range from 2020 to 2024
-#If you need to setup 1 year:
-#years = [2020]
-years = range(2020, 2025) 
 
-tmdb_access_token =  "..."
+years = range(int(yaars_settings.split("-")[0]), int(yaars_settings.split("-")[1]) + 1) if "-" in yaars_settings else [int()]
 
 dates = create_date_ranges(years)
 tmdb_api = tmdb.TMDB(tmdb_access_token)
 
-MAX_THREADS = 12
 multithreading_run(dates)
 
 with open(save_file, 'w') as f:

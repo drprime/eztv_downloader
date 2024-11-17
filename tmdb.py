@@ -11,13 +11,17 @@ class TMDB():
         self.headers = {
             "Authorization" : "Bearer " + access_token
         }
-    def discover(self, params):
+    def discover(self, params, enable_log=False):
         for key in self.params.keys():
             params[key] = self.params[key]
         response = requests.get(self.api_endpoint + "discover/movie", params=params, headers=self.headers)
         res = response.json()
+        if enable_log:
+            print(res)
         return res
-    def external_ids(self, id):
+    def external_ids(self, id, enable_log=False):
         response = requests.get(self.api_endpoint + f"movie/{id}/external_ids", headers=self.headers)
         res = response.json()
+        if enable_log:
+            print(res)
         return res

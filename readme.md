@@ -80,9 +80,8 @@ python3 eztv_downloader.py
 
 
 ## imdb id scraping
-### 1. Setup variables in file tmdb_get_ids.py
-
-You can change scraping filters in ``params`` object
+### 1. Setup variables in .env file
+You can change scraping filters in ``params`` object in script body
 
 ```python
 vote_average.gte #minimal rating 
@@ -92,28 +91,36 @@ with_origin_country #country list with "|" separator
 
 Setup save file
 
-```python
-save_file = 'id_list.txt'
+```env
+TMDB_SAVE_FILE = id_list_test.txt
 ```
 
 Setup years range
 
-```python
-years = range(2020, 2025) #range from 2020 to 2024
-years = [2020] #only 2020
+```env
+TMDB_YEARS = 2020-2021
+TMDB_YEARS = 2020
 ```
 
 Setup tmdb access token
 
-```python
-tmdb_access_token = "..."
+```env
+TMDB_ACCESS_TOKEN = ...
 ```
 
 Setup threads num
 
-```python
-MAX_THREADS = 12
+```env
+TMDB_MAX_THREADS = 8
 ```
+
+Enable or disable responde logging
+
+```env
+TMDB_ENABLE_LOGS = false
+TMDB_ENABLE_LOGS = true
+```
+
 
 ### 2. Run script
 ```sh
