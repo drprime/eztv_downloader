@@ -1,5 +1,9 @@
 import tmdb
 from multiprocessing.pool import ThreadPool
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def create_date_ranges(years):
     dates = []
@@ -26,6 +30,7 @@ def get_imdb_ids(date_range):
         params["page"] = page
         res = tmdb.discover(params)
         if len(res["results"]) == 0:
+            print(res)
             break
         for movie in res["results"]:
             res_id = tmdb.external_ids(movie["id"])
