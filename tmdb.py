@@ -18,10 +18,14 @@ class TMDB():
         res = response.json()
         if enable_log:
             print(res)
+        if "success" in res and not res["success"]:
+           raise Exception(res["status_message"])
         return res
     def external_ids(self, id, enable_log=False):
         response = requests.get(self.api_endpoint + f"movie/{id}/external_ids", headers=self.headers)
         res = response.json()
         if enable_log:
             print(res)
+        if "success" in res and not res["success"]:
+           raise Exception(res["status_message"])
         return res

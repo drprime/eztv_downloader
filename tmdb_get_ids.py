@@ -18,23 +18,30 @@ def create_date_ranges(years):
 
 
 def get_imdb_ids(date_range):
-    msg_range = date_range["start_date"] + "-" + date_range["end_date"]
-    print(f"New thread started with range {msg_range}")
-    page = 0
-    params["primary_release_date.gte"] = date_range["start_date"]
-    params["primary_release_date.lte"] = date_range["end_date"]
+    try:
+        msg_range = date_range["start_date"] + "-" + date_range["end_date"]
+        print(f"New thread started with range {msg_range}")
+        page = 0
+        params["primary_release_date.gte"] = date_range["start_date"]
+        params["primary_release_date.lte"] = date_range["end_date"]
 
-    while True:
-        page += 1
-        print(f"Date range {msg_range}. Page {str(page)}")
-        params["page"] = page
-        res = tmdb_api.discover(params,enable_log)
-        if len(res["results"]) == 0:
-            break
-        for movie in res["results"]:
-            res_id = tmdb_api.external_ids(movie["id"], enable_log)
-            if res_id["imdb_id"] is not None:
-                results.append(res_id["imdb_id"])
+        while True:
+            page += 1
+            print(f"Date range {msg_range}. Page {str(page)}")
+            params["page"] = page
+            res = tmdb_api.discover(params,enable_log)
+            print(res)
+            if len(res["results"]) == 0:
+                break
+            for movie in res["results"]:
+                res_id = tmdb_api.external_ids(movie["id"], enable_log)
+                if res_id["imdb_id"] is not None:
+                    results.append(res_id["imdb_id"])
+    except Exception as e:
+        print(e)
+        if str(e) == "Invalid API key: You must be granted a valid key.":
+            os._exit(1)
+
 
 
 def multithreading_run(dates):
@@ -64,7 +71,7 @@ enable_log = os.getenv("TMDB_ENABLE_LOGS") == "true"
 MAX_THREADS = int(os.getenv("TMDB_MAX_THREADS")) 
 
 
-years = range(int(yaars_settings.split("-")[0]), int(yaars_settings.split("-")[1]) + 1) if "-" in yaars_settings else [int()]
+years = range(int(yaars_settings.split("-")[0]), int(yaars_settings.split("-")[1]) + 1) if "-" in yaars_settings else [int(yaars_settings)]
 
 dates = create_date_ranges(years)
 tmdb_api = tmdb.TMDB(tmdb_access_token)
